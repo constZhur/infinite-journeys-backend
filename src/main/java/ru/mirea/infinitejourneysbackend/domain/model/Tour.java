@@ -29,8 +29,10 @@ public class Tour {
     @Column(name = "content", length = 10_000)
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "country", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Country country;
 
     @ManyToOne
