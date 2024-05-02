@@ -2,11 +2,13 @@ package ru.mirea.infinitejourneysbackend.domain.dto.user;
 
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.mirea.infinitejourneysbackend.domain.dto.pagination.PageRequestDTO;
 import ru.mirea.infinitejourneysbackend.validation.constraints.ValidRole;
 
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class UserFilter extends PageRequestDTO {
     private UUID id;
