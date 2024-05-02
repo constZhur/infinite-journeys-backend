@@ -65,6 +65,12 @@ public class User implements UserDetails {
     @Column(name = "deleted_at")
     private OffsetDateTime deletedAt;
 
+    @OneToMany(mappedBy = "seller", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Tour> tours;
+
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Comment> comments;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
