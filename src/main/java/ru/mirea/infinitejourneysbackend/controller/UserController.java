@@ -4,13 +4,20 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.mirea.infinitejourneysbackend.domain.dto.order.BuyOrderRequest;
+import ru.mirea.infinitejourneysbackend.domain.dto.order.OrderResponse;
 import ru.mirea.infinitejourneysbackend.domain.dto.pagination.PageResponse;
 import ru.mirea.infinitejourneysbackend.domain.dto.user.*;
+import ru.mirea.infinitejourneysbackend.domain.model.Order;
 import ru.mirea.infinitejourneysbackend.domain.model.User;
+import ru.mirea.infinitejourneysbackend.mapper.OrderMapper;
 import ru.mirea.infinitejourneysbackend.mapper.UserMapper;
 import ru.mirea.infinitejourneysbackend.service.DeleteService;
+import ru.mirea.infinitejourneysbackend.service.OrderService;
 import ru.mirea.infinitejourneysbackend.service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,7 +26,10 @@ import java.util.UUID;
 public class UserController {
     private final UserService service;
     private final DeleteService deleteService;
+    private final OrderService orderService;
+
     private final UserMapper mapper;
+    private final OrderMapper orderMapper;
 
     @PatchMapping("/change-username")
     public void selfUpdateUsername(@RequestBody @Valid UpdateUserUsernameRequest request) {
@@ -105,5 +115,17 @@ public class UserController {
     @PostMapping("/withdraw-from-balance")
     public void withdrawFromBalance(@RequestBody @Valid UpdateBalanceRequest request) {
         service.withdrawFromBalance(request);
+    }
+
+    @GetMapping("/my-orders")
+    public List<OrderResponse> getMyOrders() {
+        List<Order> myOrders = orderService.getOrders();
+        return orderMapper.toResponse(myOrders);
+    }
+
+    @PostMapping("/buy-order")
+    public OrderResponse buyOrder(@RequestBody @Valid BuyOrderRequest request) {
+        Order order = orderService.createOrder(request);
+        return orderMapper.toResponse(order);
     }
 }

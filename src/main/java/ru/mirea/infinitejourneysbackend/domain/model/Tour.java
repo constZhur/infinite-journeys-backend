@@ -58,6 +58,9 @@ public class Tour {
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL)
+    private List<Order> orders;
+
     public void addFiles(List<UploadedFile> files) {
         if (attachments == null) {
             attachments = new ArrayList<>();

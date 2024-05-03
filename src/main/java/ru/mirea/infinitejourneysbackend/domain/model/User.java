@@ -74,6 +74,9 @@ public class User implements UserDetails {
     @Column(name = "balance")
     private Double balance = 0.0;
 
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
+    private List<Order> orders;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
