@@ -19,5 +19,4 @@ public record UpdateTourRequest(
 
         @ValidFiles
         List<MultipartFile> attachments
-) {
-}
+) { }

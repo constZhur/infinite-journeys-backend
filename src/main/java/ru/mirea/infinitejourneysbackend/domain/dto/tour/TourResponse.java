@@ -14,6 +14,8 @@ public record TourResponse(
 
         String description,
 
+        Double price,
+
         CountryResponse country,
 
         UserResponse seller,

@@ -10,6 +10,8 @@ public record TourRequest(
 
         String description,
 
+        Double price,
+
         Long countryId,
 
         @ValidFiles

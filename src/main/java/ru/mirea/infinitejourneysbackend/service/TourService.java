@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mirea.infinitejourneysbackend.domain.dto.tour.TourFilter;
 import ru.mirea.infinitejourneysbackend.domain.dto.tour.TourRequest;
+import ru.mirea.infinitejourneysbackend.domain.dto.tour.UpdateTourPriceRequest;
 import ru.mirea.infinitejourneysbackend.domain.dto.tour.UpdateTourRequest;
 import ru.mirea.infinitejourneysbackend.domain.model.Tour;
 import ru.mirea.infinitejourneysbackend.domain.model.User;
@@ -41,6 +42,7 @@ public class TourService {
                 .title(request.title())
                 .seller(userService.getCurrentUser())
                 .description(request.description())
+                .price(request.price())
                 .country(countryService.getById(request.countryId()))
                 .build();
         return setTourInformation(request, tour);
@@ -125,5 +127,18 @@ public class TourService {
     public void deleteBySellerId(UUID id) {
         var tours = repository.findAllBySellerId(id);
         tours.forEach(tour -> deleteById(tour.getId()));
+    }
+
+    @Transactional
+    public Tour updateTourPrice(UpdateTourPriceRequest request, Long tourId) {
+        var tour = getById(tourId);
+        var currentUser = userService.getCurrentUser();
+
+        if (!tour.isSeller(currentUser)) {
+            throw new ForbiddenAccessProblem();
+        }
+
+        tour.setPrice(request.price());
+        return save(tour);
     }
 }

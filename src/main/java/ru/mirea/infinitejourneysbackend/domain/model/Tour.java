@@ -29,6 +29,9 @@ public class Tour {
     @Column(name = "content", length = 10_000)
     private String description;
 
+    @Column(name = "price")
+    private Double price = 100.0;
+
     @ManyToOne
     @JoinColumn(name = "country_id")
     @ToString.Exclude

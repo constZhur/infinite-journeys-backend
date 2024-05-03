@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.mirea.infinitejourneysbackend.domain.dto.pagination.PageResponse;
-import ru.mirea.infinitejourneysbackend.domain.dto.tour.TourFilter;
-import ru.mirea.infinitejourneysbackend.domain.dto.tour.TourRequest;
-import ru.mirea.infinitejourneysbackend.domain.dto.tour.TourResponse;
-import ru.mirea.infinitejourneysbackend.domain.dto.tour.UpdateTourRequest;
+import ru.mirea.infinitejourneysbackend.domain.dto.tour.*;
 import ru.mirea.infinitejourneysbackend.domain.model.Tour;
 import ru.mirea.infinitejourneysbackend.mapper.TourMapper;
 import ru.mirea.infinitejourneysbackend.service.TourService;
@@ -36,14 +33,14 @@ public class TourController {
     }
 
     @DeleteMapping("/{tourId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SELLER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTour(@PathVariable Long tourId) {
         service.deleteById(tourId);
     }
 
     @PutMapping("/{tourId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SELLER')")
     public TourResponse updateTour(
             @RequestBody @Valid UpdateTourRequest request,
             @PathVariable Long tourId
@@ -63,6 +60,16 @@ public class TourController {
         result.setPageSize(tours.getSize());
         result.setContent(mapper.toResponse(tours.getContent()));
         return result;
+    }
+
+    @PutMapping("/{tourId}/price")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public TourResponse updateTourPrice(
+            @RequestBody UpdateTourPriceRequest request,
+            @PathVariable Long tourId
+    ) {
+        Tour tour = service.updateTourPrice(request, tourId);
+        return mapper.toResponse(tour);
     }
 
 }
