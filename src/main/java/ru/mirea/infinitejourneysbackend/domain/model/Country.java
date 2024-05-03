@@ -18,8 +18,8 @@ import java.util.List;
 public class Country {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_type_id_seq")
-    @SequenceGenerator(name = "post_type_id_seq", sequenceName = "post_type_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "country_id_seq")
+    @SequenceGenerator(name = "country_id_seq", sequenceName = "country_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "name", unique = true)
