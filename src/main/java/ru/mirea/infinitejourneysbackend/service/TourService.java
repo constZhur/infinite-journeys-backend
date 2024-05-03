@@ -42,6 +42,8 @@ public class TourService {
                 .title(request.title())
                 .seller(userService.getCurrentUser())
                 .description(request.description())
+                .startDate(request.startDate())
+                .endDate(request.endDate())
                 .price(request.price())
                 .country(countryService.getById(request.countryId()))
                 .build();

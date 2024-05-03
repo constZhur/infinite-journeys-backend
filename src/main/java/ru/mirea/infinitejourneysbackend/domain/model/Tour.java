@@ -29,6 +29,12 @@ public class Tour {
     @Column(name = "content", length = 10_000)
     private String description;
 
+    @Column(name = "start_date")
+    private OffsetDateTime startDate;
+
+    @Column(name = "end_date")
+    private OffsetDateTime endDate;
+
     @Column(name = "price")
     private Double price = 100.0;
 

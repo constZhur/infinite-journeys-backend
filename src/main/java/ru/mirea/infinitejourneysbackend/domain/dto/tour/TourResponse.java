@@ -14,6 +14,10 @@ public record TourResponse(
 
         String description,
 
+        OffsetDateTime startDate,
+
+        OffsetDateTime endDate,
+
         Double price,
 
         CountryResponse country,

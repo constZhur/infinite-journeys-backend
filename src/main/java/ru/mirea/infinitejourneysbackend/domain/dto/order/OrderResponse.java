@@ -9,6 +9,10 @@ public record OrderResponse(
 
     String tourDescription,
 
+    OffsetDateTime startDate,
+
+    OffsetDateTime endDate,
+
     String countryName,
 
     Double price,

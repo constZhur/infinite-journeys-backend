@@ -12,6 +12,8 @@ public interface OrderMapper {
 
     @Mapping(source = "tour.title", target = "tourTitle")
     @Mapping(source = "tour.description", target = "tourDescription")
+    @Mapping(source = "tour.startDate", target = "startDate")
+    @Mapping(source = "tour.endDate", target = "endDate")
     @Mapping(source = "tour.country.name", target = "countryName")
     @Mapping(source = "tour.price", target = "price")
     @Mapping(source = "tour.seller.username", target = "sellerName")
