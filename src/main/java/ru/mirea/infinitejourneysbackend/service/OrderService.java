@@ -6,9 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.mirea.infinitejourneysbackend.domain.dto.order.BuyOrderRequest;
 import ru.mirea.infinitejourneysbackend.domain.model.Order;
 import ru.mirea.infinitejourneysbackend.exception.tour.TourNotFoundProblem;
-import ru.mirea.infinitejourneysbackend.exception.user.InsufficientBalanceException;
+import ru.mirea.infinitejourneysbackend.exception.user.InsufficientBalanceProblem;
 import ru.mirea.infinitejourneysbackend.repository.OrderRepository;
 import ru.mirea.infinitejourneysbackend.repository.TourRepository;
+import ru.mirea.infinitejourneysbackend.service.email.EmailService;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final UserService userService;
+    private final EmailService emailService;
+
     private final TourRepository tourRepository;
     private final OrderRepository orderRepository;
 
@@ -33,7 +36,7 @@ public class OrderService {
         Double price = tour.getPrice();
 
         if (buyer.getBalance() < price) {
-            throw new InsufficientBalanceException();
+            throw new InsufficientBalanceProblem();
         }
 
         buyer.setBalance(buyer.getBalance() - price);
@@ -45,6 +48,8 @@ public class OrderService {
                 .build();
 
         orderRepository.save(order);
+        emailService.sendEmail(order);
+
         return order;
     }
 }
