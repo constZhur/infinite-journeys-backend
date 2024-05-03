@@ -1,5 +1,8 @@
 package ru.mirea.infinitejourneysbackend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,10 +17,14 @@ import ru.mirea.infinitejourneysbackend.service.TourService;
 @RestController
 @RequestMapping("/tours")
 @RequiredArgsConstructor
+@Tag(name = "Контроллер туров", description = "Управление турами")
+@SecurityRequirement(name = "infinite-journeys-api")
 public class TourController {
     private final TourService service;
     private final TourMapper mapper;
 
+    @Operation(summary = "Создание тура",
+            description = "Позволяет создать новый тур.")
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
@@ -26,12 +33,16 @@ public class TourController {
         return mapper.toResponse(tour);
     }
 
+    @Operation(summary = "Получение тура по ID",
+            description = "Позволяет получить информацию о туре по его идентификатору.")
     @GetMapping("/{tourId}")
     public TourResponse getTourById(@PathVariable Long tourId) {
         Tour tour = service.getById(tourId);
         return mapper.toResponse(tour);
     }
 
+    @Operation(summary = "Удаление тура",
+            description = "Позволяет удалить тур по его идентификатору.")
     @DeleteMapping("/{tourId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SELLER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -39,6 +50,8 @@ public class TourController {
         service.deleteById(tourId);
     }
 
+    @Operation(summary = "Обновление тура",
+            description = "Позволяет обновить информацию о туре.")
     @PutMapping("/{tourId}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SELLER')")
     public TourResponse updateTour(
@@ -49,6 +62,8 @@ public class TourController {
         return mapper.toResponse(tour);
     }
 
+    @Operation(summary = "Поиск туров по фильтру",
+            description = "Позволяет найти туры по заданным критериям.")
     @PostMapping("/filter")
     public PageResponse<TourResponse> findToursByFilter(@RequestBody @Valid TourFilter filter) {
         var result = new PageResponse<TourResponse>();
@@ -62,6 +77,8 @@ public class TourController {
         return result;
     }
 
+    @Operation(summary = "Обновление цены тура",
+            description = "Позволяет обновить цену тура.")
     @PutMapping("/{tourId}/price")
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public TourResponse updateTourPrice(
@@ -71,5 +88,5 @@ public class TourController {
         Tour tour = service.updateTourPrice(request, tourId);
         return mapper.toResponse(tour);
     }
-
 }
+

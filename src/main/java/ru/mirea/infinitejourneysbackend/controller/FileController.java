@@ -1,5 +1,8 @@
 package ru.mirea.infinitejourneysbackend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,28 +20,38 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/files")
 @RequiredArgsConstructor
+@Tag(name = "Контроллер файлов", description = "Управление файлами")
+@SecurityRequirement(name = "infinite-journeys-api")
 public class FileController {
     private final FileService service;
     private final UploadedFileMapper mapper;
 
+    @Operation(summary = "Загрузка файлов",
+            description = "Позволяет загружать файлы на сервер.")
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
     public List<UUID> uploadFiles(@RequestParam("files") MultipartFile[] files) {
         return service.uploadFilesAndGetIds(files);
     }
 
+    @Operation(summary = "Получение всех файлов",
+            description = "Позволяет получить список всех загруженных файлов.")
     @GetMapping
     public List<UploadedFileResponse> getAllFiles() {
         List<UploadedFile> files = service.getAll();
         return mapper.toResponse(files);
     }
 
+    @Operation(summary = "Получение файла по ID",
+            description = "Позволяет получить информацию о файле по его идентификатору.")
     @GetMapping("/{fileId}")
     public UploadedFileResponse getFileById(@PathVariable("fileId") UUID fileId) {
         UploadedFile file = service.getById(fileId);
         return mapper.toResponse(file);
     }
 
+    @Operation(summary = "Скачивание файла",
+            description = "Позволяет скачать файл по его идентификатору.")
     @GetMapping("/download/{fileId}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable("fileId") UUID fileId) {
         var file = service.downloadFile(fileId);
@@ -54,3 +67,4 @@ public class FileController {
                 .body(file.content());
     }
 }
+

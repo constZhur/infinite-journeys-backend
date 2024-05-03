@@ -1,23 +1,35 @@
 package ru.mirea.infinitejourneysbackend.domain.dto.order;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.OffsetDateTime;
 
+@Schema(description = "Ответ с информацией о заказе")
 public record OrderResponse(
-    Long id,
+        @Schema(description = "Идентификатор заказа", example = "1")
+        Long id,
 
-    String tourTitle,
+        @Schema(description = "Название тура", example = "Новый тур")
+        String tourTitle,
 
-    String tourDescription,
+        @Schema(description = "Описание тура", example = "Этот тот самый долгожданный тур")
+        String tourDescription,
 
-    OffsetDateTime startDate,
+        @Schema(description = "Дата начала тура", example = "2023-05-05T10:10:10.000+00:00")
+        OffsetDateTime startDate,
 
-    OffsetDateTime endDate,
+        @Schema(description = "Дата окончания тура", example = "2023-05-15T10:10:10.000+00:00")
+        OffsetDateTime endDate,
 
-    String countryName,
+        @Schema(description = "Название страны", example = "Россия")
+        String countryName,
 
-    Double price,
+        @Schema(description = "Цена тура", example = "1000.0")
+        Double price,
 
-    String sellerName,
+        @Schema(description = "Имя продавца", example = "Wenos")
+        String sellerName,
 
-    OffsetDateTime createdAt
+        @Schema(description = "Дата и время создания заказа", example = "2023-05-05T10:10:10.000+00:00")
+        OffsetDateTime createdAt
 ) { }

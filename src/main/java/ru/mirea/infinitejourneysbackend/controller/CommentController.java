@@ -1,5 +1,8 @@
 package ru.mirea.infinitejourneysbackend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,22 +16,27 @@ import ru.mirea.infinitejourneysbackend.service.CommentService;
 @RestController
 @RequestMapping("/comments")
 @RequiredArgsConstructor
+@Tag(name = "Контроллер комментариев", description = "Управление комментариями")
+@SecurityRequirement(name = "infinite-journeys-api")
 public class CommentController {
     private final CommentService service;
     private final CommentMapper mapper;
 
+    @Operation(summary = "Создание комментария", description = "Создает новый комментарий.")
     @PostMapping
     public CommentResponse createComment(@RequestBody @Valid CreateCommentRequest request) {
         Comment comment = service.create(request);
         return mapper.toResponse(comment);
     }
 
+    @Operation(summary = "Получение комментария по ID", description = "Получает информацию о комментарии по его идентификатору.")
     @GetMapping("/{commentId}")
     public CommentResponse getCommentById(@PathVariable Long commentId) {
         Comment comment = service.getById(commentId);
         return mapper.toResponse(comment);
     }
 
+    @Operation(summary = "Обновление комментария", description = "Обновляет информацию о существующем комментарии.")
     @PutMapping("/{commentId}")
     public CommentResponse updateComment(
             @RequestBody @Valid UpdateCommentRequest request,
@@ -38,12 +46,14 @@ public class CommentController {
         return mapper.toResponse(comment);
     }
 
+    @Operation(summary = "Удаление комментария по ID", description = "Удаляет комментарий по его идентификатору.")
     @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCommentById(@PathVariable Long commentId) {
         service.deleteById(commentId);
     }
 
+    @Operation(summary = "Поиск комментариев по ID тура", description = "Позволяет найти комментарии по идентификатору тура.")
     @PostMapping("/tour")
     public PageResponse<CommentResponse> findCommentsByTourId(@RequestBody @Valid CommentFilter filter) {
         var comments = service.findByTourId(filter);
@@ -57,6 +67,7 @@ public class CommentController {
         return result;
     }
 
+    @Operation(summary = "Поиск комментариев в потоке", description = "Позволяет найти комментарии в определенном потоке.")
     @PostMapping("/thread")
     public PageResponse<CommentThreadResponse> findThreadComments(@RequestBody @Valid CommentThreadFilter filter) {
         var comments = service.findByCommentId(filter);
@@ -69,5 +80,5 @@ public class CommentController {
         result.setContent(mapper.toResponseThread(comments.getContent()));
         return result;
     }
-
 }
+
