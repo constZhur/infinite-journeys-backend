@@ -71,6 +71,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Comment> comments;
 
+    @Column(name = "balance")
+    private Double balance = 0.0;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

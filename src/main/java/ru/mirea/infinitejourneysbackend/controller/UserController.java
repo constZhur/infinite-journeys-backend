@@ -91,4 +91,19 @@ public class UserController {
     public void deleteUser(@RequestBody @Valid DeleteUserRequest request) {
         deleteService.deleteUser(request);
     }
+
+    @GetMapping("/balance")
+    public Double getCurrentBalance() {
+        return service.getCurrentBalance();
+    }
+
+    @PostMapping("/top-up-balance")
+    public void topUpBalance(@RequestBody @Valid UpdateBalanceRequest request) {
+        service.topUpBalance(request);
+    }
+
+    @PostMapping("/withdraw-from-balance")
+    public void withdrawFromBalance(@RequestBody @Valid UpdateBalanceRequest request) {
+        service.withdrawFromBalance(request);
+    }
 }

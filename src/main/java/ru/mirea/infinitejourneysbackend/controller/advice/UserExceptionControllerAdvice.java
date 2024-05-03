@@ -56,4 +56,11 @@ public class UserExceptionControllerAdvice {
                 .status(HttpStatus.BAD_REQUEST)
                 .body("Invalid user password provided.");
     }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public  ResponseEntity<String> handleInsufficientBalanceException() {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Insufficient funds in the account.");
+    }
 }

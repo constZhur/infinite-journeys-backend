@@ -44,6 +44,7 @@ public class UserService {
             u.setEmail(RandomStringUtils.randomAlphanumeric(10) + "@gmail.com");
             u.setPassword(passwordEncoder.encode(superUserConfig.getSuperuserDefaultPassword()));
             u.setRole(Role.ROLE_ADMIN);
+            u.setBalance(10000.0);
             repository.save(u);
             log.info("Создан суперпользователь с именем пользователя superuser и паролем superuser");
         } else {
@@ -234,6 +235,31 @@ public class UserService {
 
         // Ни покупатель, ни продавец не имеют доступа к другим пользователям
         return false;
+    }
+
+    public Double getCurrentBalance() {
+        User currentUser = getCurrentUser();
+        return currentUser.getBalance();
+    }
+
+    public void topUpBalance(UpdateBalanceRequest request) {
+        var amount = request.amount();
+        var user = getCurrentUser();
+        user.setBalance(user.getBalance() + amount);
+        save(user);
+    }
+
+    public void withdrawFromBalance(UpdateBalanceRequest request) {
+        var amount = request.amount();
+        var user = getCurrentUser();
+        Double balance = user.getBalance();
+
+        if (balance < amount) {
+            throw new InsufficientBalanceException();
+        }
+
+        user.setBalance(balance - amount);
+        save(user);
     }
 
 

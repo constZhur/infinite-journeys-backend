@@ -32,6 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .username(request.username())
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
+                .balance(0.0)
                 .role(Role.ROLE_BUYER)
                 .build();
 
