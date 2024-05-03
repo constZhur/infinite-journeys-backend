@@ -34,13 +34,13 @@ public class FileController {
     }
 
     @GetMapping("/{fileId}")
-    public UploadedFileResponse getFileById(@PathVariable UUID fileId) {
+    public UploadedFileResponse getFileById(@PathVariable("fileId") UUID fileId) {
         UploadedFile file = service.getById(fileId);
         return mapper.toResponse(file);
     }
 
     @GetMapping("/download/{fileId}")
-    public ResponseEntity<byte[]> downloadFile(@PathVariable UUID fileId) {
+    public ResponseEntity<byte[]> downloadFile(@PathVariable("fileId") UUID fileId) {
         var file = service.downloadFile(fileId);
         HttpHeaders headers = new HttpHeaders();
 

@@ -45,7 +45,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/unban/{userId}")
-    public void resetBannedAt(@PathVariable UUID userId) {
+    public void resetBannedAt(@PathVariable("userId") UUID userId) {
         service.resetBannedAt(userId);
     }
 
