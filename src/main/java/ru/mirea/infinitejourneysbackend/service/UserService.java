@@ -255,7 +255,7 @@ public class UserService {
         Double balance = user.getBalance();
 
         if (balance < amount) {
-            throw new InsufficientBalanceException();
+            throw new InsufficientBalanceProblem();
         }
 
         user.setBalance(balance - amount);

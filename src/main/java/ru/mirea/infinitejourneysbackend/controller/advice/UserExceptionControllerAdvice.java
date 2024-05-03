@@ -57,7 +57,7 @@ public class UserExceptionControllerAdvice {
                 .body("Invalid user password provided.");
     }
 
-    @ExceptionHandler(InsufficientBalanceException.class)
+    @ExceptionHandler(InsufficientBalanceProblem.class)
     public  ResponseEntity<String> handleInsufficientBalanceException() {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
