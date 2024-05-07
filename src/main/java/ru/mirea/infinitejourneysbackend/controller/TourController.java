@@ -14,6 +14,8 @@ import ru.mirea.infinitejourneysbackend.domain.model.Tour;
 import ru.mirea.infinitejourneysbackend.mapper.TourMapper;
 import ru.mirea.infinitejourneysbackend.service.TourService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tours")
 @RequiredArgsConstructor
@@ -39,6 +41,14 @@ public class TourController {
     public TourResponse getTourById(@PathVariable Long tourId) {
         Tour tour = service.getById(tourId);
         return mapper.toResponse(tour);
+    }
+
+    @Operation(summary = "Получение всех туров",
+            description = "Позволяет получить список всех туров.")
+    @GetMapping
+    public List<TourResponse> getAllTours() {
+        List<Tour> tours = service.getAll();
+        return mapper.toResponse(tours);
     }
 
     @Operation(summary = "Удаление тура",

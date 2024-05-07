@@ -18,6 +18,7 @@ import ru.mirea.infinitejourneysbackend.exception.user.ForbiddenAccessProblem;
 import ru.mirea.infinitejourneysbackend.repository.TourFileRelationRepository;
 import ru.mirea.infinitejourneysbackend.repository.TourRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,6 +49,10 @@ public class TourService {
                 .country(countryService.getById(request.countryId()))
                 .build();
         return setTourInformation(request, tour);
+    }
+
+    public List<Tour> getAll() {
+        return repository.findAll();
     }
 
     public Optional<Tour> findById(Long id) {
