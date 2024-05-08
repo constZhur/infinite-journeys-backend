@@ -14,10 +14,12 @@ import java.util.UUID;
 @Repository
 public interface TourRepository extends JpaRepository<Tour, Long> {
 
-    @Query("select t from Tour t where " +
-            "(:countryId is null or t.country.id = :countryId)")
-    Page<Tour> findAllByCountryId(
+    @Query("SELECT t FROM Tour t WHERE " +
+            "(:countryId IS null or t.country.id = :countryId) " +
+            "AND (:tourName IS null or t.title LIKE %:tourName%)")
+    Page<Tour> findAllByCountryIdAndTourName(
             @Param("countryId") Long countryId,
+            @Param("tourName") String tourName,
             Pageable pageable);
 
     List<Tour> findAllBySellerId(UUID seller_id);

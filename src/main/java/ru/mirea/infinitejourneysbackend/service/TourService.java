@@ -127,7 +127,7 @@ public class TourService {
 
     public Page<Tour> findByFilter(TourFilter filter) {
         Pageable pageable = PageRequest.of(filter.getPage(), filter.getSize());
-        return repository.findAllByCountryId(filter.getCountryId(), pageable);
+        return repository.findAllByCountryIdAndTourName(filter.getCountryId(), filter.getTourName(), pageable);
     }
 
     @Transactional

@@ -12,4 +12,7 @@ public class TourFilter extends PageRequestDTO {
 
     @Schema(description = "Идентификатор страны", example = "1")
     private Long countryId;
+
+    @Schema(description = "Название тура", example = "Новый тур")
+    private String tourName;
 }
