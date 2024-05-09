@@ -25,5 +25,8 @@ public record UserProfileResponse(
         Role role,
 
         @Schema(description = "Гендер пользователя", example = "MALE")
-        Gender gender
+        Gender gender,
+
+        @Schema(description = "Счет", example = "1000.0")
+        Double balance
 ) { }
