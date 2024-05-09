@@ -37,16 +37,23 @@ public class UserController {
 
     @Operation(summary = "Изменение имени пользователя",
             description = "Позволяет пользователю изменить своё имя.")
-    @PatchMapping("/change-username")
+    @PutMapping("/change-username")
     public void selfUpdateUsername(@RequestBody @Valid UpdateUserUsernameRequest request) {
         service.selfUpdateUsername(request);
     }
 
     @Operation(summary = "Изменение электронной почты пользователя",
             description = "Позволяет пользователю изменить свою электронную почту.")
-    @PatchMapping("/change-email")
+    @PutMapping("/change-email")
     public void selfUpdateEmail(@RequestBody @Valid UpdateUserEmailRequest request) {
         service.selfUpdateEmail(request);
+    }
+
+    @Operation(summary = "Изменение пола пользователя",
+            description = "Позволяет пользователю изменить свой пол.")
+    @PutMapping("/change-gender")
+    public void selfUpdateGender(@RequestBody @Valid UpdateUserGenderRequest request) {
+        service.changeGender(request);
     }
 
     @Operation(summary = "Получение профиля пользователя",

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.mirea.infinitejourneysbackend.config.security.SuperUserConfig;
 import ru.mirea.infinitejourneysbackend.domain.dto.user.*;
+import ru.mirea.infinitejourneysbackend.domain.model.Gender;
 import ru.mirea.infinitejourneysbackend.domain.model.Role;
 import ru.mirea.infinitejourneysbackend.domain.model.User;
 import ru.mirea.infinitejourneysbackend.exception.user.*;
@@ -148,6 +149,14 @@ public class UserService {
 
         user.setRole(Role.valueOf(request.role()));
         save(user);
+    }
+
+    public void changeGender(UpdateUserGenderRequest request) {
+        User current = getCurrentUser();
+        Gender gender = Gender.valueOf(request.gender());
+
+        current.setGender(gender);
+        save(current);
     }
 
 
