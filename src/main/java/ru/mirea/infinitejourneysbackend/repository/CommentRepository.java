@@ -20,5 +20,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             @Param("commentId") Long commentId,
             Pageable pageable);
 
-    void deleteAllByAuthorId(UUID author_id);
+    void deleteAllByAuthorId(UUID authorId);
 }
