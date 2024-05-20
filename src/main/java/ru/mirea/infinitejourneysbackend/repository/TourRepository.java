@@ -22,6 +22,6 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
             @Param("tourName") String tourName,
             Pageable pageable);
 
-    List<Tour> findAllBySellerId(UUID seller_id);
+    List<Tour> findAllBySellerId(UUID sellerId);
 
 }
