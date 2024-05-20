@@ -15,7 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("select c from Comment c where c.tour.id = ?1 and c.parent is null")
     Page<Comment> findAllByTourId(Long tourId, Pageable pageable);
 
-    @Query("select c from Comment c where (c.parent != null and c.parent.id = :commentId)")
+    @Query("select c from Comment c where c.parent.id = :commentId")
     Page<Comment> findAllByParentId(
             @Param("commentId") Long commentId,
             Pageable pageable);
