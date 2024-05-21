@@ -33,13 +33,14 @@ public class OrderService {
         var tour = tourRepository.findById(request.tourId())
                 .orElseThrow(() -> new TourNotFoundProblem(request.tourId().toString()));
 
-        Double price = tour.getPrice();
+        double price = tour.getPrice();
+        double buyerBalance = buyer.getBalance();
 
-        if (buyer.getBalance() < price) {
+        if (buyerBalance < price) {
             throw new InsufficientBalanceProblem();
         }
 
-        buyer.setBalance(buyer.getBalance() - price);
+        buyer.setBalance(buyerBalance - price);
         tour.getSeller().setBalance(tour.getSeller().getBalance() + price);
 
         Order order = Order.builder()
