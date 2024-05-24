@@ -12,18 +12,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CloudStorageConfig {
     @Value("${storage.cloud.user-id}")
-    public String userId;
+    private String userId;
 
     @Value("${storage.cloud.access-key}")
-    public String accessKey;
+    private String accessKey;
 
     @Value("${storage.cloud.bucket-name}")
-    public String bucketName;
+    private String bucketName;
 
     @Value("${storage.cloud.url}")
-    public String url;
+    private String url;
 
     @Value("${storage.cloud.region}")
-    public String region;
-
+    private String region;
 }
