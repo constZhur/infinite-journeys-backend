@@ -2,6 +2,10 @@ package ru.mirea.infinitejourneysbackend.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +30,7 @@ import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "tours")
 public class TourService {
     private final TourRepository repository;
     private final FileService fileService;
@@ -33,6 +38,7 @@ public class TourService {
     private final UserService userService;
     private final TourFileRelationRepository tourFileRelationRepository;
 
+    @CachePut
     public Tour save(Tour tour) {
         return repository.save(tour);
     }
@@ -51,6 +57,7 @@ public class TourService {
         return setTourInformation(request, tour);
     }
 
+    @Cacheable(unless = "#result == null")
     public List<Tour> getAll() {
         return repository.findAll();
     }
@@ -59,11 +66,13 @@ public class TourService {
         return repository.findById(id);
     }
 
+    @Cacheable(unless = "#result == null")
     public Tour getById(Long tourId) {
         return findById(tourId).orElseThrow(() -> new TourNotFoundProblem(tourId.toString()));
     }
 
     @Transactional
+    @CacheEvict
     public void deleteById(Long tourId) {
         User currentUser = userService.getCurrentUser();
         Tour tour = getById(tourId);
@@ -81,6 +90,7 @@ public class TourService {
     }
 
     @Transactional
+    @CachePut
     public Tour update(UpdateTourRequest request, Long tourId) {
         var tour = getById(tourId);
         var currentUser = userService.getCurrentUser();
@@ -125,18 +135,21 @@ public class TourService {
         return save(tour);
     }
 
+    @Cacheable(unless = "#result == null")
     public Page<Tour> findByFilter(TourFilter filter) {
         Pageable pageable = PageRequest.of(filter.getPage(), filter.getSize());
         return repository.findAllByCountryIdAndTourName(filter.getCountryId(), filter.getTourName(), pageable);
     }
 
     @Transactional
+    @CacheEvict
     public void deleteBySellerId(UUID id) {
         var tours = repository.findAllBySellerId(id);
         tours.forEach(tour -> deleteById(tour.getId()));
     }
 
     @Transactional
+    @CachePut
     public Tour updateTourPrice(UpdateTourPriceRequest request, Long tourId) {
         var tour = getById(tourId);
         var currentUser = userService.getCurrentUser();
